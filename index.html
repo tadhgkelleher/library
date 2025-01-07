@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Astronomy Library Graph</title>
+  <title>Astronomy Library Network</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #000000;
+      background-color: #1e1e2f;
       color: #fff;
       font-family: 'Arial', sans-serif;
     }
 
     #connections-graph-container {
       position: relative;
-      background-color: #000000;
+      background-color: #1e1e2f;
       margin: 0 auto;
       width: 100%;
       padding: 10px;
@@ -60,7 +60,7 @@
 <body>
 
 <div id="connections-graph-container">
-  <button class="toggle-physics-button">Push Buitton</button>
+  <button class="toggle-physics-button">Push Button</button>
   <div id="connections-graph"></div>
 </div>
 
@@ -68,26 +68,21 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
-      { id: 1, title: "Carl Sagan", type: "Author", tags: ["Cosmology", "Astronomy"] },
-      { id: 2, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astrophysics", "Astronomy"] },
-      { id: 3, title: "Stephen Hawking", type: "Author", tags: ["Black Holes", "Cosmology"] },
-      { id: 4, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Astrophysics", "Book"] },
-      { id: 5, title: "Cosmos", type: "Book", tags: ["Cosmology", "Book"] },
-      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Black Holes", "Book"] },
-      { id: 7, title: "Milky Way", type: "Subject", tags: ["Galaxy", "Subject"] },
-      { id: 8, title: "The Big Bang Theory", type: "Subject", tags: ["Cosmology", "Subject"] },
-      { id: 9, title: "Black Holes", type: "Subject", tags: ["Astrophysics", "Subject"] },
-      { id: 10, title: "Hubble Space Telescope", type: "Item", tags: ["Space Telescope", "Item"] },
-      { id: 11, title: "James Webb Space Telescope", type: "Item", tags: ["Space Telescope", "Item"] },
-      { id: 12, title: "The Andromeda Galaxy", type: "Item", tags: ["Galaxy", "Item"] },
-      { id: 13, title: "Dark Matter", type: "Subject", tags: ["Physics", "Subject"] },
-      { id: 14, title: "Dark Energy", type: "Subject", tags: ["Physics", "Subject"] },
-      { id: 15, title: "Neutron Stars", type: "Subject", tags: ["Astrophysics", "Subject"] },
-      { id: 16, title: "Gravity", type: "Subject", tags: ["Physics", "Subject"] },
-      { id: 17, title: "Space-Time", type: "Subject", tags: ["Physics", "Subject"] },
-      { id: 18, title: "Cosmic Microwave Background", type: "Item", tags: ["Cosmology", "Item"] },
-      { id: 19, title: "Solar System", type: "Subject", tags: ["Astronomy", "Subject"] },
-      { id: 20, title: "Exoplanets", type: "Subject", tags: ["Astronomy", "Subject"] },
+      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
+      { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
+      { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
+      { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
+      { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
+      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
+      { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+      { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
+      { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
+      { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
+      { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+      { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] }
     ];
 
     const nodes = new vis.DataSet([]);
@@ -95,10 +90,21 @@
     const nodeConnections = {};
 
     const groups = {
-      Author: { color: { background: '#4B0082', border: '#800080' } },   // Purple for authors
-      Book: { color: { background: '#1E90FF', border: '#4682B4' } },      // Blue for books
-      Subject: { color: { background: '#32CD32', border: '#228B22' } },    // Green for subjects
-      Item: { color: { background: '#FFD700', border: '#FF8C00' } },       // Gold for items
+      Author: {
+        color: { background: '#7f4b94', border: '#5a2d7b' }
+      },
+      Book: {
+        color: { background: '#53a6c1', border: '#1f4e5b' }
+      },
+      Subject: {
+        color: { background: '#c0c2ff', border: '#8f90ff' }
+      },
+      Concept: {
+        color: { background: '#ffdf87', border: '#d4b142' }
+      },
+      Item: {
+        color: { background: '#5d81ff', border: '#3e5a99' }
+      }
     };
 
     items.forEach(item => {
@@ -115,15 +121,15 @@
       item.tags.forEach(tag => {
         const tagNode = nodes.get(tag);
         if (!tagNode) {
-          nodes.add({
-            id: tag,
-            label: tag,
+          nodes.add({ 
+            id: tag, 
+            label: tag, 
             group: "Subject", // Default for undefined tags
             font: { color: '#ffffff' }
           });
         }
-        edges.add({
-          from: item.id,
+        edges.add({ 
+          from: item.id, 
           to: tag,
           color: { color: '#666666', highlight: '#999999' }
         });
@@ -162,8 +168,8 @@
         solver: 'forceAtlas2Based',
         forceAtlas2Based: {
           gravitationalConstant: -50,
-          centralGravity: 0.01,
-          springLength: 100,
+          centralGravity: 0.001,
+          springLength: 150,
           springConstant: 0.08
         },
         stabilization: {

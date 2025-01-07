@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Astronomy Library Graph</title>
+  <title>Astronomy Library Network</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #000000;
+      background-color: #1e1e2f;
       color: #fff;
       font-family: 'Arial', sans-serif;
     }
 
     #connections-graph-container {
       position: relative;
-      background-color: #000000;
+      background-color: #1e1e2f;
       margin: 0 auto;
       width: 100%;
       padding: 10px;
@@ -60,7 +60,7 @@
 <body>
 
 <div id="connections-graph-container">
-  <button class="toggle-physics-button">Push button</button>
+  <button class="toggle-physics-button">Toggle Physics</button>
   <div id="connections-graph"></div>
 </div>
 
@@ -68,21 +68,21 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
-      { id: 1, title: "Isaac Newton", type: "Scientist", tags: ["Gravity", "Scientist"] },
-      { id: 2, title: "Galileo Galilei", type: "Scientist", tags: ["Telescope", "Scientist"] },
-      { id: 3, title: "Stephen Hawking", type: "Scientist", tags: ["Black Holes", "Scientist"] },
-      { id: 4, title: "The Principia", type: "Book", tags: ["Gravity", "Book"] },
-      { id: 5, title: "The Starry Messenger", type: "Book", tags: ["Telescope", "Book"] },
-      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Black Holes", "Book"] },
-      { id: 7, title: "Black Hole", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
-      { id: 8, title: "Star", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
-      { id: 9, title: "Supernova", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
-      { id: 10, title: "Galaxy", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
-      { id: 11, title: "Quantum Mechanics", type: "Concept", tags: ["Physics", "Concept"] },
-      { id: 12, title: "Relativity", type: "Concept", tags: ["Physics", "Concept"] },
-      { id: 13, title: "Big Bang", type: "Concept", tags: ["Cosmology", "Concept"] },
-      { id: 14, title: "Cosmic Microwave Background", type: "Concept", tags: ["Cosmology", "Concept"] },
-      { id: 15, title: "Exoplanet", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] }
+      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
+      { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
+      { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
+      { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
+      { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
+      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
+      { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+      { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
+      { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
+      { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
+      { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
+      { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+      { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] }
     ];
 
     const nodes = new vis.DataSet([]);
@@ -90,17 +90,20 @@
     const nodeConnections = {};
 
     const groups = {
-      Scientist: {
-        color: { background: '#7B68EE', border: '#4B0082' }
+      Author: {
+        color: { background: '#7f4b94', border: '#5a2d7b' }
       },
       Book: {
-        color: { background: '#8A2BE2', border: '#6A5ACD' }
+        color: { background: '#53a6c1', border: '#1f4e5b' }
       },
-      AstronomicalObject: {
-        color: { background: '#FFD700', border: '#FF8C00' }
+      Subject: {
+        color: { background: '#c0c2ff', border: '#8f90ff' }
       },
       Concept: {
-        color: { background: '#32CD32', border: '#228B22' }
+        color: { background: '#ffdf87', border: '#d4b142' }
+      },
+      Item: {
+        color: { background: '#5d81ff', border: '#3e5a99' }
       }
     };
 
@@ -109,8 +112,8 @@
         id: item.id,
         label: item.title,
         title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
-        group: item.type, 
-        size: item.tags.length * 6, 
+        group: item.type,
+        size: item.tags.length * 6, // Increased node size for larger visibility
         font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
@@ -121,7 +124,7 @@
           nodes.add({ 
             id: tag, 
             label: tag, 
-            group: "Concept", 
+            group: "Subject", // Default for undefined tags
             font: { color: '#ffffff' }
           });
         }
@@ -138,7 +141,7 @@
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 3);
+      node.size = Math.max(10, connectionCount * 3); // Increased size factor
       nodes.update(node);
     });
 
@@ -151,7 +154,7 @@
         font: { size: 14 },
         scaling: {
           min: 10,
-          max: 25
+          max: 25 // Max size for larger nodes
         }
       },
       edges: {
@@ -166,18 +169,79 @@
         forceAtlas2Based: {
           gravitationalConstant: -50,
           centralGravity: 0.01,
-          springLength: 200,
-          springConstant: 0.05
+          springLength: 100,
+          springConstant: 0.08
+        },
+        stabilization: {
+          iterations: 100
         }
+      },
+      interaction: {
+        hover: true,
+        zoomView: true,
+        dragView: true,
+        dragNodes: true,
+        zoomSpeed: 0.5,
+        tooltipDelay: 300
+      },
+      groups: groups,
+      layout: {
+        randomSeed: 2,
+        improvedLayout: true
       }
     };
 
     const network = new vis.Network(container, data, options);
 
+    function applyCircularLayout() {
+      const positions = {};
+      const nodeCount = nodes.length;
+      const radius = 350;
+      const angle = (2 * Math.PI) / nodeCount;
+      
+      let i = 0;
+      nodes.forEach((node) => {
+        positions[node.id] = {
+          x: radius * Math.cos(angle * i),
+          y: radius * Math.sin(angle * i)
+        };
+        i++;
+      });
+      
+      network.setOptions({ physics: { enabled: false } });
+      network.moveTo({ scale: 0.3 });
+      network.body.data.nodes.update(
+        nodes.map(node => ({
+          id: node.id,
+          x: positions[node.id].x,
+          y: positions[node.id].y
+        }))
+      );
+    }
+
+    network.moveTo({
+      position: { x: 0, y: 0 },
+      scale: 0.3,
+      animation: {
+        duration: 1000,
+        easingFunction: 'easeInOutQuad'
+      }
+    });
+
+    // Initial layout
+    applyCircularLayout();
+
     const toggleButton = document.querySelector(".toggle-physics-button");
-    toggleButton.addEventListener("click", function () {
-      const currentPhysics = network.getOptions().physics.enabled;
-      network.setOptions({ physics: { enabled: !currentPhysics } });
+    let isPhysicsEnabled = false;
+
+    toggleButton.addEventListener("click", function() {
+      isPhysicsEnabled = !isPhysicsEnabled;
+      if (isPhysicsEnabled) {
+        network.setOptions({ physics: { enabled: true } });
+      } else {
+        applyCircularLayout();
+        network.setOptions({ physics: { enabled: false } });
+      }
     });
   });
 </script>

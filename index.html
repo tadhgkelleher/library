@@ -67,23 +67,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const items = [
-      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
-      { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
-      { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
-      { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
-      { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
-      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
-      { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
-      { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
-      { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
-      { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] }
-    ];
+const items = [
+  { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
+  { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
+  { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
+  { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
+  { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
+  { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
+  { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
+  { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+  { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
+  { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
+  { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
+  { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
+  { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
+  { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+  { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] },
+  { id: 16, title: "Albert Einstein", type: "Author", tags: ["Relativity", "Physics"] },
+  { id: 17, title: "Relativity: The Special and General Theory", type: "Book", tags: ["Albert Einstein", "Relativity"] },
+  { id: 18, title: "James Clerk Maxwell", type: "Author", tags: ["Electromagnetism", "Physics"] },
+  { id: 19, title: "Maxwell's Equations", type: "Concept", tags: ["James Clerk Maxwell", "Electromagnetism", "Physics"] },
+  { id: 20, title: "Quantum Mechanics", type: "Subject", tags: ["Physics", "Mathematics"] },
+  { id: 21, title: "Marie Curie", type: "Author", tags: ["Radiation", "Physics"] },
+  { id: 22, title: "Radioactive Elements", type: "Concept", tags: ["Marie Curie", "Radiation", "Chemistry"] },
+  { id: 23, title: "Dark Matter", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+  { id: 24, title: "James Peebles", type: "Author", tags: ["Cosmology", "Physics"] },
+  { id: 25, title: "The Early Universe", type: "Book", tags: ["James Peebles", "Cosmology"] },
+  { id: 26, title: "Event Horizon", type: "Concept", tags: ["Astrophysics", "Black Holes"] },
+  { id: 27, title: "Observational Cosmology", type: "Subject", tags: ["Cosmology", "Astronomy"] },
+  { id: 28, title: "Space-Time Continuum", type: "Concept", tags: ["Relativity", "Physics"] },
+  { id: 29, title: "Roger Penrose", type: "Author", tags: ["Mathematics", "Physics"] },
+  { id: 30, title: "The Road to Reality", type: "Book", tags: ["Roger Penrose", "Mathematics", "Physics"] },
+  { id: 31, title: "LIGO", type: "Item", tags: ["Astronomy", "Technology"] },
+  { id: 32, title: "Gravitational Waves", type: "Subject", tags: ["Physics", "Astronomy"] },
+  { id: 33, title: "Laws of Thermodynamics", type: "Concept", tags: ["Physics"] },
+  { id: 34, title: "Cosmic Microwave Background", type: "Concept", tags: ["Cosmology", "Astronomy"] },
+  { id: 35, title: "Dark Energy", type: "Subject", tags: ["Astronomy", "Cosmology"] },
+  { id: 36, title: "William Herschel", type: "Author", tags: ["Astronomy", "Physics"] },
+  { id: 37, title: "The Discovery of Uranus", type: "Book", tags: ["William Herschel", "Astronomy"] },
+  { id: 38, title: "Exoplanets", type: "Subject", tags: ["Astronomy", "Physics"] },
+  { id: 39, title: "The Solar System", type: "Concept", tags: ["Astronomy"] },
+  { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
+];
+
 
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);

@@ -7,8 +7,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #0d0d0d;
-      color: #ffffff;
+      background-color: #000000;
+      color: #fff;
       font-family: 'Arial', sans-serif;
     }
 
@@ -32,7 +32,7 @@
     }
 
     .toggle-physics-button {
-      background-color: #ff9f00;
+      background-color: #4a90e2;
       color: white;
       padding: 12px 24px;
       border: none;
@@ -49,7 +49,7 @@
     }
 
     .toggle-physics-button:hover {
-      background-color: #e68900;
+      background-color: #357abd;
     }
 
     .toggle-physics-button:active {
@@ -60,7 +60,7 @@
 <body>
 
 <div id="connections-graph-container">
-  <button class="toggle-physics-button">Toggle Physics</button>
+  <button class="toggle-physics-button">Push button</button>
   <div id="connections-graph"></div>
 </div>
 
@@ -68,24 +68,21 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
-      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Physics", "Gravity", "Astronomy"] },
-      { id: 2, title: "Albert Einstein", type: "Author", tags: ["Theory of Relativity", "Physics", "Astronomy"] },
-      { id: 3, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy", "Space"] },
-      { id: 4, title: "The Structure of Scientific Revolutions", type: "Book", tags: ["Thomas Kuhn", "Philosophy", "Science"] },
-      { id: 5, title: "The Universe in a Nutshell", type: "Book", tags: ["Stephen Hawking", "Physics", "Cosmology"] },
-      { id: 6, title: "Astronomy: A Beginner's Guide to the Universe", type: "Book", tags: ["Eric Chaisson", "Astronomy", "Science"] },
-      { id: 7, title: "The Big Bang Theory", type: "Subject", tags: ["Cosmology", "Space", "Astronomy"] },
-      { id: 8, title: "Dark Matter", type: "Subject", tags: ["Physics", "Astronomy", "Space"] },
-      { id: 9, title: "Planetary Science", type: "Subject", tags: ["Planets", "Astronomy", "Space"] },
-      { id: 10, title: "The Andromeda Galaxy", type: "Subject", tags: ["Galaxy", "Astronomy", "Space"] },
-      { id: 11, title: "Cosmic Rays", type: "Subject", tags: ["Astrophysics", "Space", "Physics"] },
-      { id: 12, title: "Hubble Space Telescope", type: "Subject", tags: ["Telescopes", "Space", "Astronomy"] },
-      { id: 13, title: "Stellar Evolution", type: "Subject", tags: ["Stars", "Astronomy", "Cosmology"] },
-      { id: 14, title: "1860", type: "Year", tags: ["History", "Astronomy", "Science"] },
-      { id: 15, title: "1927", type: "Year", tags: ["History", "Cosmology", "Astronomy"] },
-      { id: 16, title: "1969", type: "Year", tags: ["History", "Space", "Astronomy"] },
-      { id: 17, title: "1973", type: "Year", tags: ["History", "Astronomy", "Space"] },
-      { id: 18, title: "2019", type: "Year", tags: ["History", "Astronomy", "Space"] }
+      { id: 1, title: "Isaac Newton", type: "Scientist", tags: ["Gravity", "Scientist"] },
+      { id: 2, title: "Galileo Galilei", type: "Scientist", tags: ["Telescope", "Scientist"] },
+      { id: 3, title: "Stephen Hawking", type: "Scientist", tags: ["Black Holes", "Scientist"] },
+      { id: 4, title: "The Principia", type: "Book", tags: ["Gravity", "Book"] },
+      { id: 5, title: "The Starry Messenger", type: "Book", tags: ["Telescope", "Book"] },
+      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Black Holes", "Book"] },
+      { id: 7, title: "Black Hole", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
+      { id: 8, title: "Star", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
+      { id: 9, title: "Supernova", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
+      { id: 10, title: "Galaxy", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] },
+      { id: 11, title: "Quantum Mechanics", type: "Concept", tags: ["Physics", "Concept"] },
+      { id: 12, title: "Relativity", type: "Concept", tags: ["Physics", "Concept"] },
+      { id: 13, title: "Big Bang", type: "Concept", tags: ["Cosmology", "Concept"] },
+      { id: 14, title: "Cosmic Microwave Background", type: "Concept", tags: ["Cosmology", "Concept"] },
+      { id: 15, title: "Exoplanet", type: "Astronomical Object", tags: ["Space", "Astronomical Object"] }
     ];
 
     const nodes = new vis.DataSet([]);
@@ -93,17 +90,17 @@
     const nodeConnections = {};
 
     const groups = {
-      Author: {
-        color: { background: '#2E2B5F', border: '#1C1A3A' }
+      Scientist: {
+        color: { background: '#7B68EE', border: '#4B0082' }
       },
       Book: {
-        color: { background: '#512B58', border: '#3A1F44' }
+        color: { background: '#8A2BE2', border: '#6A5ACD' }
       },
-      Subject: {
-        color: { background: '#3C6E71', border: '#2D4F56' }
+      AstronomicalObject: {
+        color: { background: '#FFD700', border: '#FF8C00' }
       },
-      Year: {
-        color: { background: '#006D77', border: '#004D55' }
+      Concept: {
+        color: { background: '#32CD32', border: '#228B22' }
       }
     };
 
@@ -112,8 +109,8 @@
         id: item.id,
         label: item.title,
         title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
-        group: item.type, // Used type to define the group
-        size: item.tags.length * 6, // Increased node size for larger visibility
+        group: item.type, 
+        size: item.tags.length * 6, 
         font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
@@ -124,7 +121,7 @@
           nodes.add({ 
             id: tag, 
             label: tag, 
-            group: "Subject", // Default for undefined tags
+            group: "Concept", 
             font: { color: '#ffffff' }
           });
         }
@@ -141,7 +138,7 @@
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 3); // Increased size factor
+      node.size = Math.max(10, connectionCount * 3);
       nodes.update(node);
     });
 
@@ -154,7 +151,7 @@
         font: { size: 14 },
         scaling: {
           min: 10,
-          max: 25 // Max size for larger nodes
+          max: 25
         }
       },
       edges: {
@@ -169,79 +166,18 @@
         forceAtlas2Based: {
           gravitationalConstant: -50,
           centralGravity: 0.01,
-          springLength: 100,
-          springConstant: 0.08
-        },
-        stabilization: {
-          iterations: 100
+          springLength: 200,
+          springConstant: 0.05
         }
-      },
-      interaction: {
-        hover: true,
-        zoomView: true,
-        dragView: true,
-        dragNodes: true,
-        zoomSpeed: 0.5,
-        tooltipDelay: 300
-      },
-      groups: groups,
-      layout: {
-        randomSeed: 2,
-        improvedLayout: true
       }
     };
 
     const network = new vis.Network(container, data, options);
 
-    function applyCircularLayout() {
-      const positions = {};
-      const nodeCount = nodes.length;
-      const radius = 350;
-      const angle = (2 * Math.PI) / nodeCount;
-      
-      let i = 0;
-      nodes.forEach((node) => {
-        positions[node.id] = {
-          x: radius * Math.cos(angle * i),
-          y: radius * Math.sin(angle * i)
-        };
-        i++;
-      });
-      
-      network.setOptions({ physics: { enabled: false } });
-      network.moveTo({ scale: 0.3 });
-      network.body.data.nodes.update(
-        nodes.map(node => ({
-          id: node.id,
-          x: positions[node.id].x,
-          y: positions[node.id].y
-        }))
-      );
-    }
-
-    network.moveTo({
-      position: { x: 0, y: 0 },
-      scale: 0.3,
-      animation: {
-        duration: 1000,
-        easingFunction: 'easeInOutQuad'
-      }
-    });
-
-    // Initial layout
-    applyCircularLayout();
-
     const toggleButton = document.querySelector(".toggle-physics-button");
-    let isPhysicsEnabled = false;
-
-    toggleButton.addEventListener("click", function() {
-      isPhysicsEnabled = !isPhysicsEnabled;
-      if (isPhysicsEnabled) {
-        network.setOptions({ physics: { enabled: true } });
-      } else {
-        applyCircularLayout();
-        network.setOptions({ physics: { enabled: false } });
-      }
+    toggleButton.addEventListener("click", function () {
+      const currentPhysics = network.getOptions().physics.enabled;
+      network.setOptions({ physics: { enabled: !currentPhysics } });
     });
   });
 </script>

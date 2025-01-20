@@ -58,18 +58,11 @@
     }
 
     .device-status {
-      margin-top: 10px;
-      font-size: 16px;
-      color: #ff6f61;
+      color: #fff;
+      margin-top: 20px;
+      font-size: 18px;
       font-weight: bold;
-    }
-
-    .device-status.connected {
-      color: #4caf50;
-    }
-
-    .device-status.not-connected {
-      color: #f44336;
+      text-align: center;
     }
   </style>
 </head>
@@ -77,54 +70,16 @@
 
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
+  <div class="device-status" id="device-status">Device Status: Not connected</div>
   <div id="connections-graph"></div>
-  <div class="device-status">Device not connected</div> <!-- Device Status Indicator -->
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script src="https://unpkg.com/nextmind.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
-      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
-      { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
-      { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
-      { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
-      { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
-      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
-      { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
-      { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
-      { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
-      { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] },
-      { id: 16, title: "Albert Einstein", type: "Author", tags: ["Relativity", "Physics"] },
-      { id: 17, title: "Relativity: The Special and General Theory", type: "Book", tags: ["Albert Einstein", "Relativity"] },
-      { id: 18, title: "James Clerk Maxwell", type: "Author", tags: ["Electromagnetism", "Physics"] },
-      { id: 19, title: "Maxwell's Equations", type: "Concept", tags: ["James Clerk Maxwell", "Electromagnetism", "Physics"] },
-      { id: 20, title: "Quantum Mechanics", type: "Subject", tags: ["Physics", "Mathematics"] },
-      { id: 21, title: "Marie Curie", type: "Author", tags: ["Radiation", "Physics"] },
-      { id: 22, title: "Radioactive Elements", type: "Concept", tags: ["Marie Curie", "Radiation", "Chemistry"] },
-      { id: 23, title: "Dark Matter", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 24, title: "James Peebles", type: "Author", tags: ["Cosmology", "Physics"] },
-      { id: 25, title: "The Early Universe", type: "Book", tags: ["James Peebles", "Cosmology"] },
-      { id: 26, title: "Event Horizon", type: "Concept", tags: ["Astrophysics", "Black Holes"] },
-      { id: 27, title: "Observational Cosmology", type: "Subject", tags: ["Cosmology", "Astronomy"] },
-      { id: 28, title: "Space-Time Continuum", type: "Concept", tags: ["Relativity", "Physics"] },
-      { id: 29, title: "Roger Penrose", type: "Author", tags: ["Mathematics", "Physics"] },
-      { id: 30, title: "The Road to Reality", type: "Book", tags: ["Roger Penrose", "Mathematics", "Physics"] },
-      { id: 31, title: "LIGO", type: "Item", tags: ["Astronomy", "Technology"] },
-      { id: 32, title: "Gravitational Waves", type: "Subject", tags: ["Physics", "Astronomy"] },
-      { id: 33, title: "Laws of Thermodynamics", type: "Concept", tags: ["Physics"] },
-      { id: 34, title: "Cosmic Microwave Background", type: "Concept", tags: ["Cosmology", "Astronomy"] },
-      { id: 35, title: "Dark Energy", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 36, title: "William Herschel", type: "Author", tags: ["Astronomy", "Physics"] },
-      { id: 37, title: "The Discovery of Uranus", type: "Book", tags: ["William Herschel", "Astronomy"] },
-      { id: 38, title: "Exoplanets", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 39, title: "The Solar System", type: "Concept", tags: ["Astronomy"] },
-      { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
+      // Your items data here...
     ];
 
     const nodes = new vis.DataSet([]);
@@ -132,11 +87,21 @@
     const nodeConnections = {};
 
     const groups = {
-      Author: { color: { background: '#7f4b94', border: '#5a2d7b' } },
-      Book: { color: { background: '#53a6c1', border: '#1f4e5b' } },
-      Subject: { color: { background: '#c0c2ff', border: '#8f90ff' } },
-      Concept: { color: { background: '#ffdf87', border: '#d4b142' } },
-      Item: { color: { background: '#5d81ff', border: '#3e5a99' } }
+      Author: {
+        color: { background: '#7f4b94', border: '#5a2d7b' }
+      },
+      Book: {
+        color: { background: '#53a6c1', border: '#1f4e5b' }
+      },
+      Subject: {
+        color: { background: '#c0c2ff', border: '#8f90ff' }
+      },
+      Concept: {
+        color: { background: '#ffdf87', border: '#d4b142' }
+      },
+      Item: {
+        color: { background: '#5d81ff', border: '#3e5a99' }
+      }
     };
 
     items.forEach(item => {
@@ -145,77 +110,158 @@
         label: item.title,
         title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
         group: item.type,
-        level: item.type === "Author" ? 0 : 1,
+        size: item.tags.length * 6, // Increased node size for larger visibility
+        font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
 
-      if (item.type === "Author") {
-        item.tags.forEach(tag => {
-          const tagNode = { id: `tag-${tag}`, label: tag, group: "Concept", level: 2 };
-          nodes.add(tagNode);
-          edges.add({ from: item.id, to: `tag-${tag}` });
+      item.tags.forEach(tag => {
+        const tagNode = nodes.get(tag);
+        if (!tagNode) {
+          nodes.add({ 
+            id: tag, 
+            label: tag, 
+            group: "Subject", // Default for undefined tags
+            font: { color: '#ffffff' }
+          });
+        }
+        edges.add({ 
+          from: item.id, 
+          to: tag,
+          color: { color: '#666666', highlight: '#999999' }
         });
-      }
+
+        nodeConnections[tag] = (nodeConnections[tag] || 0) + 1;
+        nodeConnections[item.id] = (nodeConnections[item.id] || 0) + 1;
+      });
     });
 
-    const container = document.getElementById('connections-graph');
+    nodes.forEach(node => {
+      const connectionCount = nodeConnections[node.id] || 0;
+      node.size = Math.max(10, connectionCount * 3); // Increased size factor
+      nodes.update(node);
+    });
+
+    const container = document.getElementById("connections-graph");
+    const data = { nodes: nodes, edges: edges };
+
     const options = {
-      autoResize: true,
-      layout: { hierarchical: { direction: 'LR', sortMethod: 'directed' } },
-      physics: { enabled: false },
-      groups: groups
+      nodes: {
+        shape: 'dot',
+        font: { size: 14 },
+        scaling: {
+          min: 10,
+          max: 25 // Max size for larger nodes
+        }
+      },
+      edges: {
+        width: 1,
+        smooth: {
+          type: 'continuous'
+        }
+      },
+      physics: {
+        enabled: false,
+        solver: 'forceAtlas2Based',
+        forceAtlas2Based: {
+          gravitationalConstant: -50,
+          centralGravity: 0.001,
+          springLength: 150,
+          springConstant: 0.08
+        },
+        stabilization: {
+          iterations: 100
+        }
+      },
+      interaction: {
+        hover: true,
+        zoomView: true,
+        dragView: true,
+        dragNodes: true,
+        zoomSpeed: 0.5,
+        tooltipDelay: 300
+      },
+      groups: groups,
+      layout: {
+        randomSeed: 2,
+        improvedLayout: true
+      }
     };
 
-    const network = new vis.Network(container, { nodes, edges }, options);
+    const network = new vis.Network(container, data, options);
 
-    // Toggle physics state on button click
-    const togglePhysicsButton = document.querySelector(".toggle-physics-button");
-    togglePhysicsButton.addEventListener("click", () => {
-      options.physics.enabled = !options.physics.enabled;
-      network.setOptions(options);
-      togglePhysicsButton.textContent = options.physics.enabled ? 'Turn Off Physics' : 'Turn On Physics';
-    });
-
-    // WebUSB Device status handling
-    const deviceStatusElement = document.querySelector(".device-status");
-
-    async function detectDevice() {
-      if ('usb' in navigator) {
-        console.log("WebUSB API is supported.");
-        try {
-          const devices = await navigator.usb.getDevices();
-          console.log('Devices detected:', devices);
-
-          if (devices.length === 0) {
-            console.log("No devices found.");
-            deviceStatusElement.classList.remove('connected');
-            deviceStatusElement.classList.add('not-connected');
-            deviceStatusElement.textContent = "Device not connected";
-          } else {
-            const device = devices[0];
-            console.log("Device found:", device);
-            await device.open();
-            console.log('Device opened:', device);
-
-            deviceStatusElement.classList.remove('not-connected');
-            deviceStatusElement.classList.add('connected');
-            deviceStatusElement.textContent = "Device connected: " + device.productName;
-          }
-        } catch (error) {
-          console.error("Error accessing devices:", error);
-          deviceStatusElement.classList.remove('connected');
-          deviceStatusElement.classList.add('not-connected');
-          deviceStatusElement.textContent = "Device not connected";
-        }
-      } else {
-        console.log("WebUSB API is not supported in this browser.");
-        deviceStatusElement.classList.remove('connected');
-        deviceStatusElement.classList.add('not-connected');
-        deviceStatusElement.textContent = "WebUSB API not supported";
-      }
+    function applyCircularLayout() {
+      const positions = {};
+      const nodeCount = nodes.length;
+      const radius = 350;
+      const angle = (2 * Math.PI) / nodeCount;
+      const yOffset = -200; // Add an offset to raise the mandala
+      
+      let i = 0;
+      nodes.forEach((node) => {
+        positions[node.id] = {
+          x: radius * Math.cos(angle * i),
+          y: radius * Math.sin(angle * i)
+        };
+        i++;
+      });
+      
+      network.setOptions({ physics: { enabled: false } });
+      network.moveTo({ scale: 0.3 });
+      network.body.data.nodes.update(
+        nodes.map(node => ({
+          id: node.id,
+          x: positions[node.id].x,
+          y: positions[node.id].y
+        }))
+      );
     }
 
-    detectDevice(); // Detect device on page load
+    network.moveTo({
+      position: { x: 0, y: 0 },
+      scale: 0.3,
+      animation: {
+        duration: 1000,
+        easingFunction: 'easeInOutQuad'
+      }
+    });
+
+    // Initial layout
+    applyCircularLayout();
+
+    const toggleButton = document.querySelector(".toggle-physics-button");
+    let isPhysicsEnabled = false;
+
+    toggleButton.addEventListener("click", function() {
+      isPhysicsEnabled = !isPhysicsEnabled;
+      if (isPhysicsEnabled) {
+        network.setOptions({ physics: { enabled: true } });
+      } else {
+        applyCircularLayout();
+        network.setOptions({ physics: { enabled: false } });
+      }
+    });
+
+    // NextMind Controller integration
+    let deviceConnected = false;
+    const deviceStatusElement = document.getElementById("device-status");
+
+    NextMind.startListening(function(event) {
+      if (event.type === 'device-connected') {
+        deviceConnected = true;
+        deviceStatusElement.textContent = 'Device Status: Connected';
+      } else if (event.type === 'device-disconnected') {
+        deviceConnected = false;
+        deviceStatusElement.textContent = 'Device Status: Not connected';
+      }
+    });
+
+    // Initial status check
+    if (deviceConnected) {
+      deviceStatusElement.textContent = 'Device Status: Connected';
+    } else {
+      deviceStatusElement.textContent = 'Device Status: Not connected';
+    }
   });
 </script>
 

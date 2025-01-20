@@ -144,6 +144,18 @@
       Item: { color: { background: '#5d81ff', border: '#3e5a99' } }
     };
 
+    // Vis.js Graph Setup
+    const nodes = new vis.DataSet([]);
+    const edges = new vis.DataSet([]);
+    const nodeConnections = {};
+    const groups = {
+      Author: { color: { background: '#7f4b94', border: '#5a2d7b' } },
+      Book: { color: { background: '#53a6c1', border: '#1f4e5b' } },
+      Subject: { color: { background: '#c0c2ff', border: '#8f90ff' } },
+      Concept: { color: { background: '#ffdf87', border: '#d4b142' } },
+      Item: { color: { background: '#5d81ff', border: '#3e5a99' } }
+    };
+
     items.forEach(item => {
       const itemNode = {
         id: item.id,
@@ -237,8 +249,10 @@
     let isPhysicsEnabled = false;
 
     function togglePhysicsWithNextMind(data) {
+      console.log("NextMind signal data:", data);
       if (data) {
         if (data.value > 0.7) { // Trigger threshold when signal value is strong enough
+          console.log("Threshold reached, toggling physics");
           isPhysicsEnabled = !isPhysicsEnabled;
           if (isPhysicsEnabled) {
             network.setOptions({ physics: { enabled: true } });
@@ -252,6 +266,7 @@
 
     // Start the NextMind SDK and listen for signals
     NextMind.start().then(() => {
+      console.log("NextMind initialized and connected.");
       // Show visual feedback when NextMind is synced
       document.getElementById("nextmind-status").classList.add("nextmind-sync");
       document.getElementById("nextmind-status").textContent = "NextMind Controller Synced!";

@@ -29,7 +29,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: -200px; /* Raises the graph by 100px */
+        margin-top: -200px; /* Raises the graph by 100px */
     }
 
     .toggle-physics-button {
@@ -56,30 +56,20 @@
     .toggle-physics-button:active {
       transform: translateY(1px);
     }
-
-    .device-status {
-      color: #fff;
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
 
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
-  <div class="device-status" id="device-status">Device Status: Not connected</div>
   <div id="connections-graph"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-<script src="https://unpkg.com/nextmind.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const items = [
-     { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
+const items = [
+  { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
   { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
   { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
   { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
@@ -119,7 +109,8 @@
   { id: 38, title: "Exoplanets", type: "Subject", tags: ["Astronomy", "Physics"] },
   { id: 39, title: "The Solar System", type: "Concept", tags: ["Astronomy"] },
   { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
-    ];
+];
+
 
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
@@ -147,7 +138,7 @@
       const itemNode = {
         id: item.id,
         label: item.title,
-        title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
+        title: <h3>${item.title}</h3><ul>${item.tags.map(tag => <li>${tag}</li>).join('')}</ul>,
         group: item.type,
         size: item.tags.length * 6, // Increased node size for larger visibility
         font: { color: '#ffffff' }
@@ -280,27 +271,6 @@
         network.setOptions({ physics: { enabled: false } });
       }
     });
-
-    // NextMind Controller integration
-    let deviceConnected = false;
-    const deviceStatusElement = document.getElementById("device-status");
-
-    NextMind.startListening(function(event) {
-      if (event.type === 'device-connected') {
-        deviceConnected = true;
-        deviceStatusElement.textContent = 'Device Status: Connected';
-      } else if (event.type === 'device-disconnected') {
-        deviceConnected = false;
-        deviceStatusElement.textContent = 'Device Status: Not connected';
-      }
-    });
-
-    // Initial status check
-    if (deviceConnected) {
-      deviceStatusElement.textContent = 'Device Status: Connected';
-    } else {
-      deviceStatusElement.textContent = 'Device Status: Not connected';
-    }
   });
 </script>
 

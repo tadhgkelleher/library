@@ -29,7 +29,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-        margin-top: -200px; /* Raises the graph by 100px */
+      margin-top: -200px; /* Raises the graph by 100px */
     }
 
     .toggle-physics-button {
@@ -66,6 +66,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script src="https://cdn.nextmind.com/nextmind.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
 const items = [
@@ -134,13 +135,14 @@ const items = [
       }
     };
 
+    // Add nodes and edges (same as before)
     items.forEach(item => {
       const itemNode = {
         id: item.id,
         label: item.title,
         title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
         group: item.type,
-        size: item.tags.length * 6, // Increased node size for larger visibility
+        size: item.tags.length * 6,
         font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
@@ -151,7 +153,7 @@ const items = [
           nodes.add({ 
             id: tag, 
             label: tag, 
-            group: "Subject", // Default for undefined tags
+            group: "Subject", 
             font: { color: '#ffffff' }
           });
         }
@@ -168,7 +170,7 @@ const items = [
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 3); // Increased size factor
+      node.size = Math.max(10, connectionCount * 3);
       nodes.update(node);
     });
 
@@ -179,16 +181,11 @@ const items = [
       nodes: {
         shape: 'dot',
         font: { size: 14 },
-        scaling: {
-          min: 10,
-          max: 25 // Max size for larger nodes
-        }
+        scaling: { min: 10, max: 25 }
       },
       edges: {
         width: 1,
-        smooth: {
-          type: 'continuous'
-        }
+        smooth: { type: 'continuous' }
       },
       physics: {
         enabled: false,
@@ -199,9 +196,7 @@ const items = [
           springLength: 150,
           springConstant: 0.08
         },
-        stabilization: {
-          iterations: 100
-        }
+        stabilization: { iterations: 100 }
       },
       interaction: {
         hover: true,
@@ -212,10 +207,7 @@ const items = [
         tooltipDelay: 300
       },
       groups: groups,
-      layout: {
-        randomSeed: 2,
-        improvedLayout: true
-      }
+      layout: { randomSeed: 2, improvedLayout: true }
     };
 
     const network = new vis.Network(container, data, options);
@@ -225,7 +217,7 @@ const items = [
       const nodeCount = nodes.length;
       const radius = 350;
       const angle = (2 * Math.PI) / nodeCount;
-      const yOffset = -200; // Add an offset to raise the mandala
+      const yOffset = -200;
       
       let i = 0;
       nodes.forEach((node) => {
@@ -250,13 +242,9 @@ const items = [
     network.moveTo({
       position: { x: 0, y: 0 },
       scale: 0.3,
-      animation: {
-        duration: 1000,
-        easingFunction: 'easeInOutQuad'
-      }
+      animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
     });
 
-    // Initial layout
     applyCircularLayout();
 
     const toggleButton = document.querySelector(".toggle-physics-button");
@@ -271,6 +259,16 @@ const items = [
         network.setOptions({ physics: { enabled: false } });
       }
     });
+
+    // NextMind integration
+    NextMind.on('signal', function(signal) {
+      if (signal.type === 'focus') {
+        toggleButton.click(); // Simulate the button click
+      }
+    });
+
+    // Start NextMind controller
+    NextMind.start();
   });
 </script>
 

@@ -29,7 +29,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-        margin-top: -200px;
+      margin-top: -200px;
     }
 
     .toggle-physics-button {
@@ -56,6 +56,25 @@
     .toggle-physics-button:active {
       transform: translateY(1px);
     }
+
+    #nextmind-status {
+      color: #00ff00;
+      font-size: 16px;
+      text-align: center;
+      margin-top: 20px;
+      visibility: hidden;
+    }
+
+    .nextmind-sync {
+      visibility: visible;
+      animation: glowing 1.5s infinite;
+    }
+
+    @keyframes glowing {
+      0% { color: #00ff00; }
+      50% { color: #00b300; }
+      100% { color: #00ff00; }
+    }
   </style>
 </head>
 <body>
@@ -63,13 +82,13 @@
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
   <div id="connections-graph"></div>
+  <div id="nextmind-status">NextMind Controller Syncing...</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/nextmind-web-sdk@latest"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const items = [
   { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
   { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
   { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
@@ -233,8 +252,15 @@
 
     // Start the NextMind SDK and listen for signals
     NextMind.start().then(() => {
+      // Show visual feedback when NextMind is synced
+      document.getElementById("nextmind-status").classList.add("nextmind-sync");
+      document.getElementById("nextmind-status").textContent = "NextMind Controller Synced!";
+      
       NextMind.on('signal', togglePhysicsWithNextMind);
-    }).catch(console.error);
+    }).catch((error) => {
+      console.error("Error initializing NextMind:", error);
+      document.getElementById("nextmind-status").textContent = "NextMind Controller not detected.";
+    });
   });
 </script>
 

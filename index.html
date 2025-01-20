@@ -29,7 +29,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: -200px;
+        margin-top: -200px; /* Raises the graph by 100px */
     }
 
     .toggle-physics-button {
@@ -56,25 +56,6 @@
     .toggle-physics-button:active {
       transform: translateY(1px);
     }
-
-    #nextmind-status {
-      color: #00ff00;
-      font-size: 16px;
-      text-align: center;
-      margin-top: 20px;
-      visibility: hidden;
-    }
-
-    .nextmind-sync {
-      visibility: visible;
-      animation: glowing 1.5s infinite;
-    }
-
-    @keyframes glowing {
-      0% { color: #00ff00; }
-      50% { color: #00b300; }
-      100% { color: #00ff00; }
-    }
   </style>
 </head>
 <body>
@@ -82,13 +63,12 @@
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
   <div id="connections-graph"></div>
-  <div id="nextmind-status">NextMind Controller Syncing...</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/nextmind-web-sdk@latest"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+const items = [
   { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
   { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
   { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
@@ -132,37 +112,35 @@
 ];
 
 
- // Vis.js Graph Setup
     const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
     const nodeConnections = {};
-    const groups = {
-      Author: { color: { background: '#7f4b94', border: '#5a2d7b' } },
-      Book: { color: { background: '#53a6c1', border: '#1f4e5b' } },
-      Subject: { color: { background: '#c0c2ff', border: '#8f90ff' } },
-      Concept: { color: { background: '#ffdf87', border: '#d4b142' } },
-      Item: { color: { background: '#5d81ff', border: '#3e5a99' } }
-    };
 
-    // Vis.js Graph Setup
-    const nodes = new vis.DataSet([]);
-    const edges = new vis.DataSet([]);
-    const nodeConnections = {};
     const groups = {
-      Author: { color: { background: '#7f4b94', border: '#5a2d7b' } },
-      Book: { color: { background: '#53a6c1', border: '#1f4e5b' } },
-      Subject: { color: { background: '#c0c2ff', border: '#8f90ff' } },
-      Concept: { color: { background: '#ffdf87', border: '#d4b142' } },
-      Item: { color: { background: '#5d81ff', border: '#3e5a99' } }
+      Author: {
+        color: { background: '#7f4b94', border: '#5a2d7b' }
+      },
+      Book: {
+        color: { background: '#53a6c1', border: '#1f4e5b' }
+      },
+      Subject: {
+        color: { background: '#c0c2ff', border: '#8f90ff' }
+      },
+      Concept: {
+        color: { background: '#ffdf87', border: '#d4b142' }
+      },
+      Item: {
+        color: { background: '#5d81ff', border: '#3e5a99' }
+      }
     };
 
     items.forEach(item => {
       const itemNode = {
         id: item.id,
         label: item.title,
-        title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
+        title: <h3>${item.title}</h3><ul>${item.tags.map(tag => <li>${tag}</li>).join('')}</ul>,
         group: item.type,
-        size: item.tags.length * 6,
+        size: item.tags.length * 6, // Increased node size for larger visibility
         font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
@@ -173,7 +151,7 @@
           nodes.add({ 
             id: tag, 
             label: tag, 
-            group: "Subject", 
+            group: "Subject", // Default for undefined tags
             font: { color: '#ffffff' }
           });
         }
@@ -190,7 +168,7 @@
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 3);
+      node.size = Math.max(10, connectionCount * 3); // Increased size factor
       nodes.update(node);
     });
 
@@ -201,25 +179,53 @@
       nodes: {
         shape: 'dot',
         font: { size: 14 },
-        scaling: { min: 10, max: 25 }
+        scaling: {
+          min: 10,
+          max: 25 // Max size for larger nodes
+        }
       },
       edges: {
         width: 1,
-        smooth: { type: 'continuous' }
+        smooth: {
+          type: 'continuous'
+        }
       },
-      physics: { enabled: false },
-      interaction: { hover: true, zoomView: true, dragView: true, dragNodes: true },
-      groups: groups
+      physics: {
+        enabled: false,
+        solver: 'forceAtlas2Based',
+        forceAtlas2Based: {
+          gravitationalConstant: -50,
+          centralGravity: 0.001,
+          springLength: 150,
+          springConstant: 0.08
+        },
+        stabilization: {
+          iterations: 100
+        }
+      },
+      interaction: {
+        hover: true,
+        zoomView: true,
+        dragView: true,
+        dragNodes: true,
+        zoomSpeed: 0.5,
+        tooltipDelay: 300
+      },
+      groups: groups,
+      layout: {
+        randomSeed: 2,
+        improvedLayout: true
+      }
     };
 
     const network = new vis.Network(container, data, options);
 
-    // Apply Circular Layout
     function applyCircularLayout() {
       const positions = {};
       const nodeCount = nodes.length;
       const radius = 350;
       const angle = (2 * Math.PI) / nodeCount;
+      const yOffset = -200; // Add an offset to raise the mandala
       
       let i = 0;
       nodes.forEach((node) => {
@@ -233,48 +239,37 @@
       network.setOptions({ physics: { enabled: false } });
       network.moveTo({ scale: 0.3 });
       network.body.data.nodes.update(
-        nodes.map(node => ({ id: node.id, x: positions[node.id].x, y: positions[node.id].y }))
+        nodes.map(node => ({
+          id: node.id,
+          x: positions[node.id].x,
+          y: positions[node.id].y
+        }))
       );
     }
 
     network.moveTo({
       position: { x: 0, y: 0 },
       scale: 0.3,
-      animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
+      animation: {
+        duration: 1000,
+        easingFunction: 'easeInOutQuad'
+      }
     });
 
+    // Initial layout
     applyCircularLayout();
 
-    // NextMind Controller Integration
+    const toggleButton = document.querySelector(".toggle-physics-button");
     let isPhysicsEnabled = false;
 
-    function togglePhysicsWithNextMind(data) {
-      console.log("NextMind signal data:", data);
-      if (data) {
-        if (data.value > 0.7) { // Trigger threshold when signal value is strong enough
-          console.log("Threshold reached, toggling physics");
-          isPhysicsEnabled = !isPhysicsEnabled;
-          if (isPhysicsEnabled) {
-            network.setOptions({ physics: { enabled: true } });
-          } else {
-            applyCircularLayout();
-            network.setOptions({ physics: { enabled: false } });
-          }
-        }
+    toggleButton.addEventListener("click", function() {
+      isPhysicsEnabled = !isPhysicsEnabled;
+      if (isPhysicsEnabled) {
+        network.setOptions({ physics: { enabled: true } });
+      } else {
+        applyCircularLayout();
+        network.setOptions({ physics: { enabled: false } });
       }
-    }
-
-    // Start the NextMind SDK and listen for signals
-    NextMind.start().then(() => {
-      console.log("NextMind initialized and connected.");
-      // Show visual feedback when NextMind is synced
-      document.getElementById("nextmind-status").classList.add("nextmind-sync");
-      document.getElementById("nextmind-status").textContent = "NextMind Controller Synced!";
-      
-      NextMind.on('signal', togglePhysicsWithNextMind);
-    }).catch((error) => {
-      console.error("Error initializing NextMind:", error);
-      document.getElementById("nextmind-status").textContent = "NextMind Controller not detected.";
     });
   });
 </script>

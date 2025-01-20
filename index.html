@@ -56,6 +56,18 @@
     .toggle-physics-button:active {
       transform: translateY(1px);
     }
+
+    #nextmind-sync-feedback {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      font-size: 18px;
+      color: white;
+      text-align: center;
+      visibility: hidden; /* Initially hidden until sync is confirmed */
+    }
   </style>
 </head>
 <body>
@@ -63,13 +75,14 @@
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
   <div id="connections-graph"></div>
+  <div id="nextmind-sync-feedback">Syncing... <span id="sync-status">Not in sync</span></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script src="https://cdn.nextmind.com/nextmind.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-const items = [
+    const items = [
   { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
   { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
   { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
@@ -113,7 +126,7 @@ const items = [
 ];
 
 
-    const nodes = new vis.DataSet([]);
+   const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
     const nodeConnections = {};
 
@@ -135,7 +148,7 @@ const items = [
       }
     };
 
-    // Add nodes and edges (same as before)
+    // Adding nodes and edges logic (same as before)
     items.forEach(item => {
       const itemNode = {
         id: item.id,
@@ -260,10 +273,20 @@ const items = [
       }
     });
 
-    // NextMind integration
+    // NextMind integration for Sync Feedback
+    const syncFeedbackElement = document.getElementById("nextmind-sync-feedback");
+    const syncStatusElement = document.getElementById("sync-status");
+
     NextMind.on('signal', function(signal) {
-      if (signal.type === 'focus') {
-        toggleButton.click(); // Simulate the button click
+      if (signal.type === 'syncing') {
+        syncFeedbackElement.style.visibility = 'visible';
+        syncStatusElement.textContent = 'Syncing...';
+      } else if (signal.type === 'sync') {
+        syncStatusElement.textContent = 'In Sync';
+        syncFeedbackElement.style.backgroundColor = 'green'; // Glowing green when in sync
+      } else if (signal.type === 'out_of_sync') {
+        syncStatusElement.textContent = 'Out of Sync';
+        syncFeedbackElement.style.backgroundColor = 'red'; // Glowing red when out of sync
       }
     });
 

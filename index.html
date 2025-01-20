@@ -57,18 +57,11 @@
       transform: translateY(1px);
     }
 
-    .status {
-      font-size: 16px;
-      margin-top: 10px;
+    .device-status {
       color: #fff;
-    }
-
-    .status.connected {
-      color: #4CAF50;
-    }
-
-    .status.disconnected {
-      color: #FF4C4C;
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -77,11 +70,11 @@
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
   <div id="connections-graph"></div>
-  <div id="status" class="status disconnected">NextMind Device Status: Not Connected</div>
+  <div class="device-status" id="device-status">Device Status: Not connected</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/nextmind-sdk"></script>
+<script src="https://unpkg.com/nextmind.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
@@ -127,7 +120,7 @@
       { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
     ];
 
-    const nodes = new vis.DataSet([]);
+   const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
     const nodeConnections = {};
 
@@ -287,29 +280,26 @@
       }
     });
 
-    // NextMind SDK interaction to control physics toggle
-    let isNextMindConnected = false;
+    // NextMind Controller integration
+    let deviceConnected = false;
+    const deviceStatusElement = document.getElementById("device-status");
 
-    NextMind.deviceManager.addEventListener("deviceConnected", () => {
-      isNextMindConnected = true;
-      document.getElementById("status").classList.remove('disconnected');
-      document.getElementById("status").classList.add('connected');
-      document.getElementById("status").innerText = "NextMind Device Status: Connected";
-    });
-
-    NextMind.deviceManager.addEventListener("deviceDisconnected", () => {
-      isNextMindConnected = false;
-      document.getElementById("status").classList.remove('connected');
-      document.getElementById("status").classList.add('disconnected');
-      document.getElementById("status").innerText = "NextMind Device Status: Not Connected";
-    });
-
-    // Trigger toggle using NextMind
-    NextMind.deviceManager.addEventListener("rawData", (event) => {
-      if (isNextMindConnected && event.value > 0.5) { // Adjust threshold as needed
-        toggleButton.click(); // Simulate button click to toggle physics
+    NextMind.startListening(function(event) {
+      if (event.type === 'device-connected') {
+        deviceConnected = true;
+        deviceStatusElement.textContent = 'Device Status: Connected';
+      } else if (event.type === 'device-disconnected') {
+        deviceConnected = false;
+        deviceStatusElement.textContent = 'Device Status: Not connected';
       }
     });
+
+    // Initial status check
+    if (deviceConnected) {
+      deviceStatusElement.textContent = 'Device Status: Connected';
+    } else {
+      deviceStatusElement.textContent = 'Device Status: Not connected';
+    }
   });
 </script>
 

@@ -304,6 +304,57 @@
     }
   });
 </script>
+<script>
+  // WebUSB Device status element
+  const deviceStatusElement = document.querySelector(".device-status");
+  
+  // Function to detect WebUSB device
+  async function detectDevice() {
+    if ('usb' in navigator) {
+      console.log("WebUSB API is supported.");
+      
+      try {
+        // List available devices
+        const devices = await navigator.usb.getDevices();
+        console.log('Devices detected:', devices);
+
+        if (devices.length === 0) {
+          console.log("No devices found.");
+          deviceStatusElement.classList.remove('connected');
+          deviceStatusElement.classList.add('not-connected');
+          deviceStatusElement.textContent = "Device not connected";
+        } else {
+          const device = devices[0];
+          console.log("Device found:", device);
+
+          // Attempt to open the device if it's available
+          await device.open();
+          console.log('Device opened:', device);
+          
+          // Show connected status
+          deviceStatusElement.classList.remove('not-connected');
+          deviceStatusElement.classList.add('connected');
+          deviceStatusElement.textContent = "Device connected: " + device.productName;
+
+          // You can now interact with the device further
+        }
+      } catch (error) {
+        console.error("Error accessing devices:", error);
+        deviceStatusElement.classList.remove('connected');
+        deviceStatusElement.classList.add('not-connected');
+        deviceStatusElement.textContent = "Device not connected";
+      }
+    } else {
+      console.log("WebUSB API is not supported in this browser.");
+      deviceStatusElement.classList.remove('connected');
+      deviceStatusElement.classList.add('not-connected');
+      deviceStatusElement.textContent = "WebUSB API not supported";
+    }
+  }
+
+  // Call the function to detect device
+  detectDevice();
+</script>
 
 </body>
 </html>

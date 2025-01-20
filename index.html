@@ -59,9 +59,10 @@
 
     .device-status {
       color: #fff;
-      margin-top: 10px;
+      margin-top: 20px;
       font-size: 18px;
       font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
@@ -69,8 +70,8 @@
 
 <div id="connections-graph-container">
   <button class="toggle-physics-button">Push Button</button>
-  <div id="connections-graph"></div>
   <div class="device-status" id="device-status">Device Status: Not connected</div>
+  <div id="connections-graph"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
@@ -78,6 +79,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
+
       { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
       { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
       { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
@@ -120,7 +122,7 @@
       { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
     ];
 
-   const nodes = new vis.DataSet([]);
+    const nodes = new vis.DataSet([]);
     const edges = new vis.DataSet([]);
     const nodeConnections = {};
 

@@ -30,7 +30,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: -100px;
+      margin-top: -150px; /* Raised the graph slightly more */
     }
 
     .toggle-physics-button {
@@ -241,39 +241,59 @@
       Anatomy: { color: { background: '#fdfd96', border: '#c4c475' } }
     };
 
+    const existingNodes = new Map();
+
     items.forEach(item => {
-      const itemNode = {
-        id: item.id,
-        label: item.title,
-        title: `<h3>${item.title}</h3><ul>${(item.tags || []).map(tag => `<li>${tag}</li>`).join('')}</ul>`,
-        group: item.type,
-        font: { color: '#ffffff' }
-      };
-      nodes.add(itemNode);
+      if (!existingNodes.has(item.title)) {
+        const itemNode = {
+            id: item.id,
+            label: item.title,
+            title: `<h3>${item.title}</h3><b>Type:</b> ${item.type}`,
+            group: item.type,
+            font: { color: '#ffffff' }
+        };
+        nodes.add(itemNode);
+        existingNodes.set(item.title, item.id);
+      }
 
       (item.tags || []).forEach(tag => {
-        let tagNode = nodes.get({ filter: n => n.label === tag })[0];
-        if (!tagNode) {
-          const matchingItem = items.find(i => i.title === tag);
-          tagNode = {
-            id: tag,
-            label: tag,
-            group: matchingItem ? matchingItem.type : "Anatomy",
-            font: { color: '#ffffff' }
-          };
-          nodes.add(tagNode);
-        }
-        edges.add({ from: item.id, to: tagNode.id, color: { color: '#666666', highlight: '#999999' } });
+        let tagId = existingNodes.get(tag);
+        if (!tagId) {
+            const matchingItem = items.find(i => i.title === tag);
+            tagId = matchingItem ? matchingItem.id : tag; // Use item id if it exists, otherwise use tag name as id
 
-        nodeConnections[tagNode.id] = (nodeConnections[tagNode.id] || 0) + 1;
-        nodeConnections[item.id] = (nodeConnections[item.id] || 0) + 1;
+            if (!nodes.get(tagId)) {
+                nodes.add({
+                    id: tagId,
+                    label: tag,
+                    group: matchingItem ? matchingItem.type : "Anatomy",
+                    title: `<h3>${tag}</h3><b>Type:</b> ${matchingItem ? matchingItem.type : "Anatomy"}`,
+                    font: { color: '#ffffff' }
+                });
+                existingNodes.set(tag, tagId);
+            }
+        }
+        
+        const fromId = existingNodes.get(item.title);
+        edges.add({ from: fromId, to: tagId, color: { color: '#666666', highlight: '#999999' } });
+
+        nodeConnections[tagId] = (nodeConnections[tagId] || 0) + 1;
+        nodeConnections[fromId] = (nodeConnections[fromId] || 0) + 1;
       });
     });
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 2);
-      nodes.update(node);
+      const newSize = Math.max(15, 10 + connectionCount * 2.5);
+      const baseFontSize = 14;
+      const maxFontSize = 32;
+      const newFontSize = Math.min(maxFontSize, baseFontSize + Math.floor(connectionCount * 1.5));
+
+      nodes.update({
+        id: node.id,
+        size: newSize,
+        font: { size: newFontSize }
+      });
     });
 
     const container = document.getElementById("connections-graph");
@@ -282,8 +302,8 @@
     const options = {
       nodes: {
         shape: 'dot',
-        font: { size: 14 },
-        scaling: { min: 10, max: 25 }
+        font: { size: 14 }, // Default size, will be overridden
+        scaling: { min: 10, max: 30 }
       },
       edges: {
         width: 1,
@@ -298,7 +318,7 @@
           springLength: 100,
           springConstant: 0.08
         },
-        stabilization: { iterations: 150 }
+        stabilization: { iterations: 100 }
       },
       interaction: {
         hover: true,
@@ -314,9 +334,11 @@
     const network = new vis.Network(container, data, options);
 
     const toggleButton = document.querySelector(".toggle-physics-button");
+    let isPhysicsEnabled = true; // Physics is enabled by default in options
+
     toggleButton.addEventListener("click", function() {
-      options.physics.enabled = !options.physics.enabled;
-      network.setOptions(options);
+      isPhysicsEnabled = !isPhysicsEnabled;
+      network.setOptions({ physics: { enabled: isPhysicsEnabled } });
     });
 
     const nextMindStatusElement = document.getElementById("nextmind-status");

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Astronomy Library Network</title>
+  <title>Expanded Medical Knowledge Network</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
   <script src="https://cdn.nextmind.com/nextmind.js"></script>
   <style>
@@ -30,7 +30,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: -200px; /* Raises the graph by 100px */
+      margin-top: -100px;
     }
 
     .toggle-physics-button {
@@ -40,7 +40,7 @@
       border: none;
       border-radius: 4px;
       font-size: 18px;
-      margin: 0 auto;
+      margin: 20px auto;
       cursor: pointer;
       text-align: center;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@
 
 <div id="nextmind-status">NextMind Device Status: Not Connected</div>
 <div id="connections-graph-container">
-  <button class="toggle-physics-button">Push Button</button>
+  <button class="toggle-physics-button">Toggle Physics</button>
   <div id="connections-graph"></div>
 </div>
 
@@ -77,46 +77,156 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const items = [
-      { id: 1, title: "Isaac Newton", type: "Author", tags: ["Classical Mechanics", "Physics"] },
-      { id: 2, title: "Galileo Galilei", type: "Author", tags: ["Astronomy", "Physics"] },
-      { id: 3, title: "The Principia", type: "Book", tags: ["Isaac Newton", "Mathematics", "Physics"] },
-      { id: 4, title: "Cosmos", type: "Book", tags: ["Carl Sagan", "Astronomy"] },
-      { id: 5, title: "Stephen Hawking", type: "Author", tags: ["Cosmology", "Physics"] },
-      { id: 6, title: "A Brief History of Time", type: "Book", tags: ["Stephen Hawking", "Cosmology"] },
-      { id: 7, title: "Black Holes", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 8, title: "Big Bang Theory", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 9, title: "Neutron Stars", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 10, title: "Stellar Evolution", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 11, title: "Neil deGrasse Tyson", type: "Author", tags: ["Astronomy", "Astrophysics"] },
-      { id: 12, title: "Astrophysics for People in a Hurry", type: "Book", tags: ["Neil deGrasse Tyson", "Astrophysics"] },
-      { id: 13, title: "Astronomical Units", type: "Concept", tags: ["Astronomy"] },
-      { id: 14, title: "The Milky Way", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 15, title: "Hubble Space Telescope", type: "Item", tags: ["Astronomy", "Technology"] },
-      { id: 16, title: "Albert Einstein", type: "Author", tags: ["Relativity", "Physics"] },
-      { id: 17, title: "Relativity: The Special and General Theory", type: "Book", tags: ["Albert Einstein", "Relativity"] },
-      { id: 18, title: "James Clerk Maxwell", type: "Author", tags: ["Electromagnetism", "Physics"] },
-      { id: 19, title: "Maxwell's Equations", type: "Concept", tags: ["James Clerk Maxwell", "Electromagnetism", "Physics"] },
-      { id: 20, title: "Quantum Mechanics", type: "Subject", tags: ["Physics", "Mathematics"] },
-      { id: 21, title: "Marie Curie", type: "Author", tags: ["Radiation", "Physics"] },
-      { id: 22, title: "Radioactive Elements", type: "Concept", tags: ["Marie Curie", "Radiation", "Chemistry"] },
-      { id: 23, title: "Dark Matter", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 24, title: "James Peebles", type: "Author", tags: ["Cosmology", "Physics"] },
-      { id: 25, title: "The Early Universe", type: "Book", tags: ["James Peebles", "Cosmology"] },
-      { id: 26, title: "Event Horizon", type: "Concept", tags: ["Astrophysics", "Black Holes"] },
-      { id: 27, title: "Observational Cosmology", type: "Subject", tags: ["Cosmology", "Astronomy"] },
-      { id: 28, title: "Space-Time Continuum", type: "Concept", tags: ["Relativity", "Physics"] },
-      { id: 29, title: "Roger Penrose", type: "Author", tags: ["Mathematics", "Physics"] },
-      { id: 30, title: "The Road to Reality", type: "Book", tags: ["Roger Penrose", "Mathematics", "Physics"] },
-      { id: 31, title: "LIGO", type: "Item", tags: ["Astronomy", "Technology"] },
-      { id: 32, title: "Gravitational Waves", type: "Subject", tags: ["Physics", "Astronomy"] },
-      { id: 33, title: "Laws of Thermodynamics", type: "Concept", tags: ["Physics"] },
-      { id: 34, title: "Cosmic Microwave Background", type: "Concept", tags: ["Cosmology", "Astronomy"] },
-      { id: 35, title: "Dark Energy", type: "Subject", tags: ["Astronomy", "Cosmology"] },
-      { id: 36, title: "William Herschel", type: "Author", tags: ["Astronomy", "Physics"] },
-      { id: 37, title: "The Discovery of Uranus", type: "Book", tags: ["William Herschel", "Astronomy"] },
-      { id: 38, title: "Exoplanets", type: "Subject", tags: ["Astronomy", "Physics"] },
-      { id: 39, title: "The Solar System", type: "Concept", tags: ["Astronomy"] },
-      { id: 40, title: "Antimatter", type: "Subject", tags: ["Physics", "Cosmology"] }
+      // Infectious Diseases
+      { id: 1, title: "Influenza", type: "Disease", tags: ["Virus", "Respiratory System", "Vaccination", "Antiviral Drugs", "Hygiene"] },
+      { id: 2, title: "COVID-19", type: "Disease", tags: ["Virus", "Respiratory System", "Cardiovascular System", "Vaccination", "Antiviral Drugs", "Hygiene"] },
+      { id: 3, title: "Tuberculosis", type: "Disease", tags: ["Bacteria", "Respiratory System", "Antibiotics", "Vaccination"] },
+      { id: 4, title: "HIV/AIDS", type: "Disease", tags: ["Virus", "Immune System", "Antiretroviral Therapy", "Safe Sex"] },
+      { id: 5, title: "Malaria", type: "Disease", tags: ["Parasite", "Blood", "Antimalarial Drugs", "Mosquito Nets"] },
+      { id: 6, title: "Common Cold", type: "Disease", tags: ["Virus", "Respiratory System", "Hygiene", "Rest", "Hydration"] },
+      { id: 7, title: "Measles", type: "Disease", tags: ["Virus", "Skin", "Respiratory System", "Vaccination"] },
+      { id: 8, title: "Strep Throat", type: "Disease", tags: ["Bacteria", "Respiratory System", "Antibiotics"] },
+      { id: 9, title: "Pneumonia", type: "Disease", tags: ["Bacteria", "Virus", "Fungi", "Respiratory System", "Antibiotics", "Antiviral Drugs"] },
+      { id: 10, title: "Urinary Tract Infection", type: "Disease", tags: ["Bacteria", "Urinary System", "Antibiotics", "Hydration"] },
+      { id: 11, title: "Athlete's Foot", type: "Disease", tags: ["Fungi", "Skin", "Antifungal Medication", "Hygiene"] },
+      { id: 12, title: "Ringworm", type: "Disease", tags: ["Fungi", "Skin", "Antifungal Medication"] },
+      { id: 13, title: "Candidiasis", type: "Disease", tags: ["Fungi", "Skin", "Reproductive System", "Antifungal Medication"] },
+      { id: 14, title: "Giardiasis", type: "Disease", tags: ["Parasite", "Gastrointestinal System", "Anti-parasitic Drugs", "Clean Water"] },
+      { id: 15, title: "Scabies", type: "Disease", tags: ["Parasite", "Skin", "Topical Medications"] },
+
+      // Cardiovascular Diseases
+      { id: 16, title: "Hypertension", type: "Disease", tags: ["Cardiovascular System", "Diet", "Exercise", "Medication", "Genetics", "Stress Management"] },
+      { id: 17, title: "Coronary Artery Disease", type: "Disease", tags: ["Cardiovascular System", "Cholesterol", "Diet", "Exercise", "Statins", "Surgery"] },
+      { id: 18, title: "Heart Failure", type: "Disease", tags: ["Cardiovascular System", "Hypertension", "Medication", "Lifestyle Changes"] },
+      { id: 19, title: "Stroke", type: "Disease", tags: ["Nervous System", "Cardiovascular System", "Blood Clots", "Physical Therapy", "Medication"] },
+      { id: 20, title: "Arrhythmia", type: "Disease", tags: ["Cardiovascular System", "Medication", "Pacemaker"] },
+
+      // Respiratory Diseases
+      { id: 21, title: "Asthma", type: "Disease", tags: ["Respiratory System", "Allergens", "Inhalers", "Trigger Avoidance"] },
+      { id: 22, title: "COPD", type: "Disease", tags: ["Respiratory System", "Smoking", "Inhalers", "Oxygen Therapy", "Smoking Cessation"] },
+      { id: 23, title: "Bronchitis", type: "Disease", tags: ["Respiratory System", "Virus", "Bacteria", "Rest", "Hydration"] },
+      { id: 24, title: "Allergic Rhinitis", type: "Disease", tags: ["Respiratory System", "Immune System", "Allergens", "Antihistamines"] },
+
+      // Gastrointestinal Diseases
+      { id: 25, title: "GERD", type: "Disease", tags: ["Gastrointestinal System", "Diet", "Medication", "Lifestyle Changes"] },
+      { id: 26, title: "IBS", type: "Disease", tags: ["Gastrointestinal System", "Diet", "Stress Management", "Medication"] },
+      { id: 27, title: "Crohn's Disease", type: "Disease", tags: ["Gastrointestinal System", "Immune System", "Anti-inflammatory Drugs", "Immunosuppressants"] },
+      { id: 28, title: "Ulcerative Colitis", type: "Disease", tags: ["Gastrointestinal System", "Immune System", "Anti-inflammatory Drugs", "Immunosuppressants"] },
+      { id: 29, title: "Gastroenteritis", type: "Disease", tags: ["Gastrointestinal System", "Virus", "Bacteria", "Hydration", "Rest"] },
+
+      // Neurological Disorders
+      { id: 30, title: "Migraine", type: "Disease", tags: ["Nervous System", "Pain Relievers", "Trigger Avoidance"] },
+      { id: 31, title: "Alzheimer's Disease", type: "Disease", tags: ["Nervous System", "Genetics", "Cognitive Therapy", "Medication"] },
+      { id: 32, title: "Parkinson's Disease", type: "Disease", tags: ["Nervous System", "Medication", "Physical Therapy"] },
+      { id: 33, title: "Epilepsy", type: "Disease", tags: ["Nervous System", "Anticonvulsant Drugs"] },
+      { id: 34, title: "Multiple Sclerosis", type: "Disease", tags: ["Nervous System", "Immune System", "Immunosuppressants", "Physical Therapy"] },
+
+      // Endocrine Disorders
+      { id: 35, title: "Type 1 Diabetes", type: "Disease", tags: ["Endocrine System", "Immune System", "Insulin Therapy"] },
+      { id: 36, title: "Type 2 Diabetes", type: "Disease", tags: ["Endocrine System", "Diet", "Exercise", "Medication", "Insulin Therapy"] },
+      { id: 37, title: "Hypothyroidism", type: "Disease", tags: ["Endocrine System", "Hormone Replacement Therapy"] },
+      { id: 38, title: "Hyperthyroidism", type: "Disease", tags: ["Endocrine System", "Medication", "Radiation Therapy"] },
+      { id: 39, title: "PCOS", type: "Disease", tags: ["Endocrine System", "Reproductive System", "Lifestyle Changes", "Medication"] },
+
+      // Musculoskeletal Disorders
+      { id: 40, title: "Osteoarthritis", type: "Disease", tags: ["Musculoskeletal System", "Pain Relievers", "Physical Therapy"] },
+      { id: 41, title: "Rheumatoid Arthritis", type: "Disease", tags: ["Musculoskeletal System", "Immune System", "Anti-inflammatory Drugs", "Immunosuppressants"] },
+      { id: 42, title: "Osteoporosis", type: "Disease", tags: ["Musculoskeletal System", "Diet", "Exercise", "Medication"] },
+      { id: 43, title: "Fibromyalgia", type: "Disease", tags: ["Musculoskeletal System", "Nervous System", "Pain Relievers", "Exercise", "Stress Management"] },
+      { id: 44, title: "Low Back Pain", type: "Disease", tags: ["Musculoskeletal System", "Physical Therapy", "Pain Relievers"] },
+
+      // Cancers
+      { id: 45, title: "Lung Cancer", type: "Disease", tags: ["Respiratory System", "Smoking", "Chemotherapy", "Radiation Therapy", "Surgery", "Carcinogens"] },
+      { id: 46, title: "Breast Cancer", type: "Disease", tags: ["Reproductive System", "Genetics", "Chemotherapy", "Radiation Therapy", "Surgery"] },
+      { id: 47, title: "Prostate Cancer", type: "Disease", tags: ["Reproductive System", "Genetics", "Surgery", "Radiation Therapy"] },
+      { id: 48, title: "Colorectal Cancer", type: "Disease", tags: ["Gastrointestinal System", "Diet", "Surgery", "Chemotherapy"] },
+      { id: 49, title: "Skin Cancer", type: "Disease", tags: ["Skin", "UV Radiation", "Sunscreen", "Surgery"] },
+
+      // Mental Health Conditions
+      { id: 50, title: "Depression", type: "Disease", tags: ["Nervous System", "Psychotherapy", "Antidepressants"] },
+      { id: 51, title: "Anxiety Disorders", type: "Disease", tags: ["Nervous System", "Psychotherapy", "Medication"] },
+      { id: 52, title: "Bipolar Disorder", type: "Disease", tags: ["Nervous System", "Mood Stabilizers", "Psychotherapy"] },
+      { id: 53, title: "Schizophrenia", type: "Disease", tags: ["Nervous System", "Antipsychotic Drugs", "Psychotherapy"] },
+      { id: 54, title: "OCD", type: "Disease", tags: ["Nervous System", "Psychotherapy", "Antidepressants"] },
+
+      // Skin Conditions
+      { id: 55, title: "Acne", type: "Disease", tags: ["Skin", "Topical Medications", "Hygiene"] },
+      { id: 56, title: "Eczema", type: "Disease", tags: ["Skin", "Immune System", "Moisturizers", "Topical Steroids"] },
+      { id: 57, title: "Psoriasis", type: "Disease", tags: ["Skin", "Immune System", "Topical Medications", "Light Therapy"] },
+      { id: 58, title: "Rosacea", type: "Disease", tags: ["Skin", "Topical Medications", "Trigger Avoidance"] },
+      { id: 59, title: "Hives", type: "Disease", tags: ["Skin", "Immune System", "Antihistamines", "Allergens"] },
+
+      // Categories
+      { id: 101, title: "Virus", type: "Cause" },
+      { id: 102, title: "Bacteria", type: "Cause" },
+      { id: 103, title: "Fungi", type: "Cause" },
+      { id: 104, title: "Parasite", type: "Cause" },
+      { id: 105, title: "Genetics", type: "Cause" },
+      { id: 106, title: "Diet", type: "Cause" },
+      { id: 107, title: "Allergens", type: "Cause" },
+      { id: 108, title: "Carcinogens", type: "Cause" },
+      { id: 109, title: "Smoking", type: "Cause" },
+      { id: 110, title: "Cholesterol", type: "Cause" },
+      { id: 111, title: "Blood Clots", type: "Cause" },
+      { id: 112, title: "UV Radiation", type: "Cause" },
+
+      { id: 201, title: "Vaccination", type: "Prevention" },
+      { id: 202, title: "Hygiene", type: "Prevention" },
+      { id: 203, title: "Safe Sex", type: "Prevention" },
+      { id: 204, title: "Mosquito Nets", type: "Prevention" },
+      { id: 205, title: "Exercise", type: "Prevention" },
+      { id: 206, title: "Trigger Avoidance", type: "Prevention" },
+      { id: 207, title: "Stress Management", type: "Prevention" },
+      { id: 208, title: "Smoking Cessation", type: "Prevention" },
+      { id: 209, title: "Clean Water", type: "Prevention" },
+      { id: 210, title: "Sunscreen", type: "Prevention" },
+
+      { id: 301, title: "Antiviral Drugs", type: "Treatment" },
+      { id: 302, title: "Antibiotics", type: "Treatment" },
+      { id: 303, title: "Antiretroviral Therapy", type: "Treatment" },
+      { id: 304, title: "Antimalarial Drugs", type: "Treatment" },
+      { id: 305, title: "Medication", type: "Treatment" },
+      { id: 306, title: "Insulin Therapy", type: "Treatment" },
+      { id: 307, title: "Inhalers", type: "Treatment" },
+      { id: 308, title: "Cognitive Therapy", type: "Treatment" },
+      { id: 309, title: "Chemotherapy", type: "Treatment" },
+      { id: 310, title: "Radiation Therapy", type: "Treatment" },
+      { id: 311, title: "Surgery", type: "Treatment" },
+      { id: 312, title: "Antifungal Medication", type: "Treatment" },
+      { id: 313, title: "Anti-parasitic Drugs", type: "Treatment" },
+      { id: 314, title: "Topical Medications", type: "Treatment" },
+      { id: 315, title: "Statins", type: "Treatment" },
+      { id: 316, title: "Physical Therapy", type: "Treatment" },
+      { id: 317, title: "Pacemaker", type: "Treatment" },
+      { id: 318, title: "Oxygen Therapy", type: "Treatment" },
+      { id: 319, title: "Antihistamines", type: "Treatment" },
+      { id: 320, title: "Anti-inflammatory Drugs", type: "Treatment" },
+      { id: 321, title: "Immunosuppressants", type: "Treatment" },
+      { id: 322, title: "Pain Relievers", type: "Treatment" },
+      { id: 323, title: "Anticonvulsant Drugs", type: "Treatment" },
+      { id: 324, title: "Hormone Replacement Therapy", type: "Treatment" },
+      { id: 325, title: "Psychotherapy", type: "Treatment" },
+      { id: 326, title: "Antidepressants", type: "Treatment" },
+      { id: 327, title: "Mood Stabilizers", type: "Treatment" },
+      { id: 328, title: "Antipsychotic Drugs", type: "Treatment" },
+      { id: 329, title: "Moisturizers", type: "Treatment" },
+      { id: 330, title: "Topical Steroids", type: "Treatment" },
+      { id: 331, title: "Light Therapy", type: "Treatment" },
+      { id: 332, title: "Rest", type: "Treatment" },
+      { id: 333, title: "Hydration", type: "Treatment" },
+      { id: 334, title: "Lifestyle Changes", type: "Treatment" },
+
+      { id: 401, title: "Respiratory System", type: "Anatomy" },
+      { id: 402, title: "Immune System", type: "Anatomy" },
+      { id: 403, title: "Blood", type: "Anatomy" },
+      { id: 404, title: "Cardiovascular System", type: "Anatomy" },
+      { id: 405, title: "Endocrine System", type: "Anatomy" },
+      { id: 406, title: "Nervous System", type: "Anatomy" },
+      { id: 407, title: "Skin", type: "Anatomy" },
+      { id: 408, title: "Urinary System", type: "Anatomy" },
+      { id: 409, title: "Gastrointestinal System", type: "Anatomy" },
+      { id: 410, title: "Reproductive System", type: "Anatomy" },
+      { id: 411, title: "Musculoskeletal System", type: "Anatomy" }
     ];
 
     const nodes = new vis.DataSet([]);
@@ -124,58 +234,45 @@
     const nodeConnections = {};
 
     const groups = {
-      Author: {
-        color: { background: '#7f4b94', border: '#5a2d7b' }
-      },
-      Book: {
-        color: { background: '#53a6c1', border: '#1f4e5b' }
-      },
-      Subject: {
-        color: { background: '#c0c2ff', border: '#8f90ff' }
-      },
-      Concept: {
-        color: { background: '#ffdf87', border: '#d4b142' }
-      },
-      Item: {
-        color: { background: '#5d81ff', border: '#3e5a99' }
-      }
+      Disease: { color: { background: '#ff6961', border: '#c34a44' } },
+      Cause: { color: { background: '#ffb347', border: '#c88736' } },
+      Prevention: { color: { background: '#77dd77', border: '#5cb35c' } },
+      Treatment: { color: { background: '#aec6cf', border: '#869ca3' } },
+      Anatomy: { color: { background: '#fdfd96', border: '#c4c475' } }
     };
 
     items.forEach(item => {
       const itemNode = {
         id: item.id,
         label: item.title,
-        title: `<h3>${item.title}</h3><ul>${item.tags.map(tag => `<li>${tag}</li>`).join('')}</ul>`,
+        title: `<h3>${item.title}</h3><ul>${(item.tags || []).map(tag => `<li>${tag}</li>`).join('')}</ul>`,
         group: item.type,
-        size: item.tags.length * 6, // Increased node size for larger visibility
         font: { color: '#ffffff' }
       };
       nodes.add(itemNode);
 
-      item.tags.forEach(tag => {
-        const tagNode = nodes.get(tag);
+      (item.tags || []).forEach(tag => {
+        let tagNode = nodes.get({ filter: n => n.label === tag })[0];
         if (!tagNode) {
-          nodes.add({ 
-            id: tag, 
-            label: tag, 
-            group: "Subject", // Default for undefined tags
+          const matchingItem = items.find(i => i.title === tag);
+          tagNode = {
+            id: tag,
+            label: tag,
+            group: matchingItem ? matchingItem.type : "Anatomy",
             font: { color: '#ffffff' }
-          });
+          };
+          nodes.add(tagNode);
         }
-        edges.add({ 
-          from: item.id, 
-          to: tag,
-          color: { color: '#666666', highlight: '#999999' }
-        });
+        edges.add({ from: item.id, to: tagNode.id, color: { color: '#666666', highlight: '#999999' } });
 
-        nodeConnections[tag] = (nodeConnections[tag] || 0) + 1;
+        nodeConnections[tagNode.id] = (nodeConnections[tagNode.id] || 0) + 1;
         nodeConnections[item.id] = (nodeConnections[item.id] || 0) + 1;
       });
     });
 
     nodes.forEach(node => {
       const connectionCount = nodeConnections[node.id] || 0;
-      node.size = Math.max(10, connectionCount * 3); // Increased size factor
+      node.size = Math.max(10, connectionCount * 2);
       nodes.update(node);
     });
 
@@ -186,29 +283,22 @@
       nodes: {
         shape: 'dot',
         font: { size: 14 },
-        scaling: {
-          min: 10,
-          max: 25 // Max size for larger nodes
-        }
+        scaling: { min: 10, max: 25 }
       },
       edges: {
         width: 1,
-        smooth: {
-          type: 'continuous'
-        }
+        smooth: { type: 'continuous' }
       },
       physics: {
-        enabled: false,
+        enabled: true,
         solver: 'forceAtlas2Based',
         forceAtlas2Based: {
           gravitationalConstant: -50,
-          centralGravity: 0.001,
-          springLength: 150,
+          centralGravity: 0.005,
+          springLength: 100,
           springConstant: 0.08
         },
-        stabilization: {
-          iterations: 100
-        }
+        stabilization: { iterations: 150 }
       },
       interaction: {
         hover: true,
@@ -218,96 +308,36 @@
         zoomSpeed: 0.5,
         tooltipDelay: 300
       },
-      groups: groups,
-      layout: {
-        randomSeed: 2,
-        improvedLayout: true
-      }
+      groups: groups
     };
 
     const network = new vis.Network(container, data, options);
 
-    function applyCircularLayout() {
-      const positions = {};
-      const nodeCount = nodes.length;
-      const radius = 350;
-      const angle = (2 * Math.PI) / nodeCount;
-      const yOffset = -200; // Add an offset to raise the mandala
-
-      let i = 0;
-      nodes.forEach((node) => {
-        positions[node.id] = {
-          x: radius * Math.cos(angle * i),
-          y: radius * Math.sin(angle * i)
-        };
-        i++;
-      });
-
-      network.setOptions({ physics: { enabled: false } });
-      network.moveTo({ scale: 0.3 });
-      network.body.data.nodes.update(
-        nodes.map(node => ({
-          id: node.id,
-          x: positions[node.id].x,
-          y: positions[node.id].y
-        }))
-      );
-    }
-
-    network.moveTo({
-      position: { x: 0, y: 0 },
-      scale: 0.3,
-      animation: {
-        duration: 1000,
-        easingFunction: 'easeInOutQuad'
-      }
-    });
-
-    // Initial layout
-    applyCircularLayout();
-
     const toggleButton = document.querySelector(".toggle-physics-button");
-    let isPhysicsEnabled = false;
-
     toggleButton.addEventListener("click", function() {
-      isPhysicsEnabled = !isPhysicsEnabled;
-      if (isPhysicsEnabled) {
-        network.setOptions({ physics: { enabled: true } });
-      } else {
-        applyCircularLayout();
-        network.setOptions({ physics: { enabled: false } });
-      }
+      options.physics.enabled = !options.physics.enabled;
+      network.setOptions(options);
     });
 
     const nextMindStatusElement = document.getElementById("nextmind-status");
 
-    // Check NextMind device connection
     function updateNextMindStatus(status) {
-      if (status === "connected") {
-        nextMindStatusElement.textContent = "NextMind Device Status: Connected";
-      } else {
-        nextMindStatusElement.textContent = "NextMind Device Status: Not Connected";
-      }
+      nextMindStatusElement.textContent = `NextMind Device Status: ${status === "connected" ? "Connected" : "Not Connected"}`;
     }
 
-    // Initialize NextMind SDK
     NextMind.start({
       onConnected: () => {
         updateNextMindStatus("connected");
-        console.log("NextMind device connected");
-        // Add event listener for NextMind interactions
         NextMind.on('input', (event) => {
           if (event.action === 'button') {
-            toggleButton.click(); // Trigger the button click using the NextMind controller
+            toggleButton.click();
           }
         });
       },
       onDisconnected: () => {
         updateNextMindStatus("disconnected");
-        console.log("NextMind device disconnected");
       }
     });
-
   });
 </script>
 

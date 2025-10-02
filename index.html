@@ -30,7 +30,7 @@
       border: 1px solid #333;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: -150px; /* Raised the graph slightly more */
+      margin-top: -150px;
     }
 
     .toggle-physics-button {
@@ -249,8 +249,7 @@
             id: item.id,
             label: item.title,
             title: `<h3>${item.title}</h3><b>Type:</b> ${item.type}`,
-            group: item.type,
-            font: { color: '#ffffff' }
+            group: item.type
         };
         nodes.add(itemNode);
         existingNodes.set(item.title, item.id);
@@ -260,15 +259,14 @@
         let tagId = existingNodes.get(tag);
         if (!tagId) {
             const matchingItem = items.find(i => i.title === tag);
-            tagId = matchingItem ? matchingItem.id : tag; // Use item id if it exists, otherwise use tag name as id
+            tagId = matchingItem ? matchingItem.id : tag;
 
             if (!nodes.get(tagId)) {
                 nodes.add({
                     id: tagId,
                     label: tag,
                     group: matchingItem ? matchingItem.type : "Anatomy",
-                    title: `<h3>${tag}</h3><b>Type:</b> ${matchingItem ? matchingItem.type : "Anatomy"}`,
-                    font: { color: '#ffffff' }
+                    title: `<h3>${tag}</h3><b>Type:</b> ${matchingItem ? matchingItem.type : "Anatomy"}`
                 });
                 existingNodes.set(tag, tagId);
             }
@@ -302,7 +300,10 @@
     const options = {
       nodes: {
         shape: 'dot',
-        font: { size: 14 }, // Default size, will be overridden
+        font: {
+          color: '#ffffff', // Set default font color to white for all nodes
+          size: 14 // Default size, will be overridden by scaling logic
+        },
         scaling: { min: 10, max: 30 }
       },
       edges: {
@@ -334,7 +335,7 @@
     const network = new vis.Network(container, data, options);
 
     const toggleButton = document.querySelector(".toggle-physics-button");
-    let isPhysicsEnabled = true; // Physics is enabled by default in options
+    let isPhysicsEnabled = true;
 
     toggleButton.addEventListener("click", function() {
       isPhysicsEnabled = !isPhysicsEnabled;
